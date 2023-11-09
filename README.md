@@ -2,9 +2,9 @@
 
 ## Most relevant resources
 
-[Autogen- Github repo](https://arxiv.org/abs/2310.08560)
+[Autogen - Github repo](https://arxiv.org/abs/2310.08560)
 
-[MemGPT](https://arxiv.org/abs/2310.08560)
+[MemGPT - Github repo](https://github.com/cpacker/MemGPT)
 
 ## Archive
 
