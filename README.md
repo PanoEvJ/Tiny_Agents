@@ -13,3 +13,5 @@
 ## Archive
 
 [S-LoRA](https://arxiv.org/abs/2311.03285v2)
+
+[Extended Mind Transformers](https://blog.normalcomputing.ai/posts/2023-09-12-supersizing-transformers/supersizing-transformers.html?utm_source=substack&utm_medium=email)
