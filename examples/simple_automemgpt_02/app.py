@@ -4,7 +4,7 @@ from memgpt.autogen.memgpt_agent import create_autogen_memgpt_agent
 
 config_list = [
     {
-        "model": os.getenv("model"),  # ex. This is the model name, not the wrapper
+        "model": "gpt-4",  # ex. This is the model name, not the wrapper
         "api_key": os.getenv("OPENAI_API_KEY"),
     },
 ]
