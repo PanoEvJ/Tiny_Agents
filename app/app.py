@@ -5,7 +5,8 @@ import memgpt.autogen.interface as autogen_interface
 import memgpt.agent as agent
 import memgpt.system as system
 import memgpt.utils as utils
-import memgpt.presets as presets
+import memgpt.config as MemGPTConfig
+import memgpt.presets.presets as presets
 import memgpt.constants as constants
 import memgpt.personas.personas as personas
 import memgpt.humans.humans as humans
@@ -16,7 +17,7 @@ from memgpt.persistence_manager import (
 )
 import openai
 
-openai.api_key = os.getenv["OPENAI_API_KEY"]
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 config_list = [
     {"model": "gpt-4"},
@@ -34,7 +35,13 @@ persistence_manager = InMemoryStateManager()
 persona = "I'm a 10x engineer at a FAANG tech company."
 human = "I'm a team manager at a FAANG tech company."
 memgpt_agent = presets.use_preset(
-    presets.DEFAULT, "gpt-4", persona, human, interface, persistence_manager
+    presets.DEFAULT_PRESET,
+    MemGPTConfig,
+    "gpt-4",
+    persona,
+    human,
+    interface,
+    persistence_manager,
 )
 
 # MemGPT coder
