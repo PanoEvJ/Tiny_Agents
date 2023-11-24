@@ -12,7 +12,10 @@ Begin by doing:
 
 import os
 import autogen
-from memgpt.autogen.memgpt_agent import create_autogen_memgpt_agent, create_memgpt_autogen_agent_from_config
+from memgpt.autogen.memgpt_agent import (
+    create_autogen_memgpt_agent,
+    create_memgpt_autogen_agent_from_config,
+)
 from memgpt.presets.presets import DEFAULT_PRESET
 from memgpt.constants import LLM_MAX_TOKENS
 
@@ -21,7 +24,8 @@ if USE_OPENAI:
     # This config is for autogen agents that are not powered by MemGPT
     config_list = [
         {
-            "model": "gpt-4-1106-preview",  # gpt-4-turbo (https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
+            # "model": "gpt-4-1106-preview",  # gpt-4-turbo (https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
+            "model": "gpt-4",  # gpt-4-turbo (https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ]
@@ -29,12 +33,14 @@ if USE_OPENAI:
     # This config is for autogen agents that powered by MemGPT
     config_list_memgpt = [
         {
-            "model": "gpt-4-1106-preview",  # gpt-4-turbo (https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
+            # "model": "gpt-4-1106-preview",  # gpt-4-turbo (https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
+            "model": "gpt-4",  # gpt-4-turbo (https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
             "preset": DEFAULT_PRESET,
-            "model": None,
+            "api_key": os.getenv("OPENAI_API_KEY"),
+            # "model": None,
             "model_wrapper": None,
-            "model_endpoint_type": None,
-            "model_endpoint": None,
+            "model_endpoint_type": "openai",
+            "model_endpoint": "https://api.openai.com/v1",
             "context_window": 128000,  # gpt-4-turbo
         },
     ]
