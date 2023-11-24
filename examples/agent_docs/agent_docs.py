@@ -35,10 +35,9 @@ if USE_OPENAI:
         {
             "model": "gpt-4-1106-preview",  # gpt-4-turbo (https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
             "preset": "memgpt_docs",
-            "model": None,
             "model_wrapper": None,
-            "model_endpoint_type": None,
-            "model_endpoint": None,
+            "model_endpoint_type": "openai",
+            "model_endpoint": "https://v1",
             "context_window": 128000,  # gpt-4-turbo
         },
     ]
