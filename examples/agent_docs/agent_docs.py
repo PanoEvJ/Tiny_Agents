@@ -19,8 +19,8 @@ from memgpt.autogen.memgpt_agent import (
     create_memgpt_autogen_agent_from_config,
 )
 
-# USE_OPENAI = True
-USE_OPENAI = False
+USE_OPENAI = True
+# USE_OPENAI = False
 if USE_OPENAI:
     # This config is for autogen agents that are not powered by MemGPT
     config_list = [
