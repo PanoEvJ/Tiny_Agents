@@ -2,6 +2,8 @@ import autogen
 import os
 from memgpt.autogen.memgpt_agent import create_autogen_memgpt_agent
 
+USE_MEMGPT = True
+
 config_list = [
     {
         "model": "gpt-4",  # ex. This is the model name, not the wrapper
@@ -41,7 +43,7 @@ interface_kwargs = {
     "show_function_outputs": DEBUG,
 }
 
-if not os.getenv("use_memgpt"):
+if not USE_MEMGPT:
     coder = autogen.AssistantAgent(
         name="Coder",
         system_message=f"I am a 10x engineer, trained in Python. I was the first engineer at Uber "
