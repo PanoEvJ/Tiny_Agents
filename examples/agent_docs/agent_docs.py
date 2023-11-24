@@ -87,7 +87,7 @@ user_proxy = autogen.UserProxyAgent(
     system_message="A human admin.",
     code_execution_config={"last_n_messages": 2, "work_dir": "groupchat"},
     human_input_mode="TERMINATE",  # needed?
-    default_auto_reply="...",  # Set a default auto-reply message here (non-empty auto-reply is required for LM Studio)
+    default_auto_reply="Using Proxy Agent...",  # Set a default auto-reply message here (non-empty auto-reply is required for LM Studio)
 )
 
 # In our example, we swap this AutoGen agent with a MemGPT agent
@@ -99,10 +99,11 @@ memgpt_agent = create_memgpt_autogen_agent_from_config(
     f"(which I make sure to tell everyone I work with).\n"
     f"You are participating in a group chat with a user ({user_proxy.name}).",
     interface_kwargs=interface_kwargs,
-    default_auto_reply="Using the MemGPT agent",  # Set a default auto-reply message here (non-empty auto-reply is required for LM Studio)
+    default_auto_reply="Using MemGPT agent...",  # Set a default auto-reply message here (non-empty auto-reply is required for LM Studio)
 )
 # NOTE: you need to follow steps to load document first: see https://memgpt.readthedocs.io/en/latest/autogen/#loading-documents
-memgpt_agent.load_and_attach("memgpt_research_paper", "directory")
+path_to_file = os.path.dirname(os.path.realpath("nodes.pkl"))
+memgpt_agent.load_and_attach("memgpt_research_paper", "path_to_file")
 
 # Initialize the group chat between the agents
 groupchat = autogen.GroupChat(
