@@ -1,4 +1,10 @@
-from autogen.agentchat import Agent, GroupChat, GroupChatManager, AssistantAgent, UserProxyAgent
+from autogen.agentchat import (
+    Agent,
+    GroupChat,
+    GroupChatManager,
+    AssistantAgent,
+    UserProxyAgent,
+)
 from typing import Dict, List, Optional, Union
 import os
 from dotenv import load_dotenv
@@ -7,68 +13,59 @@ from dotenv import load_dotenv
 # https://github.com/PanoEvJ/Tiny_Agents/blob/main/src/backup/agentchat_groupchat.ipynb
 
 
-class Spawner: # Group chat spawner class
+class GroupChatSpawner:  # Group chat GroupChatSpawner class
     """(In preview) A group chat class that contains the following data fields:
-        - agents: a list of participating agents.
-        - messages: a list of messages in the group chat.
-        - max_round: the maximum number of rounds.
-        - allow_repeat_speaker: whether to allow the same speaker to speak consecutively. Default is True.
-        - speaker_selection_method: the method for selecting the next speaker. Default is "auto".
-        - llm_config: to give to the GroupChatManager
+    - agents: a list of participating agents.
+    - messages: a list of messages in the group chat.
+    - max_round: the maximum number of rounds.
+    - llm_config: to give to the GroupChatManager
 
-        
-        And returns:    the spawner should retrieve the memory of the chat history
+
+    And returns:    the GroupChatSpawner should retrieve the memory of the chat history
     """
-    
 
-    # Use Groupchat object! 
+    # Use Groupchat object!
 
     def __init__(
-            self,
-            agents: List[Agent],
-            llm_config: Dict[str, any],
-            messages: List[Dict],
-            max_round: int = 10,
-            speaker_selection_method: str = "auto",
-            allow_repeat_speaker: bool = True
-        ):    
+        self,
+        agents: List[Agent],
+        llm_config: Dict[str, any],
+        messages: List[Dict],
+        max_round: int = 10,
+    ):
         self.agents = agents
         self.messages = messages
         self.max_round = max_round
-        self.speaker_selection_method = speaker_selection_method
-        self.allow_repeat_speaker = allow_repeat_speaker
         self.llm_config = llm_config
 
     def spawn(self) -> GroupChatManager:
-        """Docstring
-        """
-        groupchat = GroupChat(agents=self.agents, 
-                  messages = self.messages, 
-                  max_round = self.max_round,
-                  speaker_selection_method = self.speaker_selection_method,
-                  allow_repeat_speaker = self.allow_repeat_speaker)
-        
-        return GroupChatManager(groupchat = groupchat,
-                                llm_config = self.llm_config)
-    
-    
+        """Docstring"""
+        groupchat = GroupChat(
+            agents=self.agents,
+            messages=self.messages,
+            max_round=self.max_round,
+        )
+
+        return GroupChatManager(groupchat=groupchat, llm_config=self.llm_config)
+
     def retrieve_memory(self) -> list[str]:
         pass
 
+
 if __name__ == "__main__":
     load_dotenv()
-    
+
     config_list_gpt4 = [
-    {
-        "model": "gpt-3.5-turbo",
-        "api_key": os.getenv("OPENAI_API_KEY"),
-        # "api_key": str(os.environ["OPENAI_API_KEY"]),
-    },
-    {
-        "model": "gpt-3.5-turbo",
-        "api_key": os.getenv("OPENAI_API_KEY"),
-    },    
-]   
+        {
+            "model": "gpt-3.5-turbo",
+            "api_key": os.getenv("OPENAI_API_KEY"),
+            # "api_key": str(os.environ["OPENAI_API_KEY"]),
+        },
+        {
+            "model": "gpt-3.5-turbo",
+            "api_key": os.getenv("OPENAI_API_KEY"),
+        },
+    ]
     Marketing_Expert = """
     Name: Alex the Marketing Expert
     Age: 32
@@ -131,37 +128,36 @@ if __name__ == "__main__":
     llm_configg = {"config_list": config_list_gpt4}
     print("loading dotenv", config_list_gpt4, llm_configg)
 
-    
     llm_config = {"config_list": config_list_gpt4}
 
     marketing = AssistantAgent(
-    name="Alex_the_Marketing_Expert",
-    system_message=Marketing_Expert,
-    # human_input_mode="TERMINATE",
-    llm_config=llm_config,
-)
+        name="Alex_the_Marketing_Expert",
+        system_message=Marketing_Expert,
+        # human_input_mode="TERMINATE",
+        llm_config=llm_config,
+    )
     sales = UserProxyAgent(
-    name="Emma_the_Sales_Expert",
-    # human_input_mode="NEVER",
-    human_input_mode="TERMINATE",
-    system_message=Sales_Expert,
-    llm_config=llm_config,
-)
+        name="Emma_the_Sales_Expert",
+        # human_input_mode="NEVER",
+        human_input_mode="TERMINATE",
+        system_message=Sales_Expert,
+        llm_config=llm_config,
+    )
     manager = AssistantAgent(
-    name="Michael_the_Manager",
-    system_message=Manager,
-    # human_input_mode="TERMINATE",
-    llm_config=llm_config,
-)
+        name="Michael_the_Manager",
+        system_message=Manager,
+        # human_input_mode="TERMINATE",
+        llm_config=llm_config,
+    )
     # print("Agents are initiated:",agents_managers, agents_sales)
-    spawnerr = Spawner(agents=[marketing, sales, manager], 
-                       messages=[], 
-                       max_round=5,
-            llm_config=llm_configg)
+    spawnerr = GroupChatSpawner(
+        agents=[marketing, sales, manager],
+        messages=[],
+        max_round=5,
+        llm_config=llm_configg,
+    )
     managerr = spawnerr.spawn()
-    
-    print("Spawner initiated!\n\n")
 
-    sales.initiate_chat(
-    managerr,
-    message=Business_Overview + email + meeting_opener)
+    print("GroupChatSpawner initiated!\n\n")
+
+    sales.initiate_chat(managerr, message=Business_Overview + email + meeting_opener)
