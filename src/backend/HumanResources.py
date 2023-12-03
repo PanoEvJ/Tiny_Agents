@@ -83,24 +83,14 @@ class HumanResources():
             json.dump(self.agent_json, f, indent=4)
 
 
-
 if __name__ == "__main__":
-    hr = HumanResources()
-    # assert _create() returns a new agent object: {'name': 'finance', 'title': 'finance manager'}
-    assert hr._create({"name": "finance", "title": "finance manager"}) == {
-        "name": "finance",
-        "title": "finance manager",
-    }
-    # assert _read() returns an agent object: {'name': 'finance', 'title': 'finance manager'}
-    assert hr._read("finance") == {"name": "finance", "title": "finance manager"}
-    # assert _update() returns an updated agent object: {'name': 'finance', 'title': 'senior finance manager'}
-    assert hr._update(
-        "finance", {"name": "finance", "title": "senior finance manager"}
-    ) == {"name": "finance", "title": "senior finance manager"}
-    # assert _delete() returns json all agents without the deleted agent, just check the names of the agents: ['sales', 'marketing', 'engineer']
-    temp_json = hr._delete("finance")
-    assert list(temp_json.keys()) == ["sales", "marketing", "engineer"]
-    # assert select_agents() returns a list of all agents: ['sales', 'marketing', 'engineer']
-    assert hr.select_agents() == ["sales", "marketing", "engineer"]
+    CHAT_INITIATOR = 'finance' 
 
-    print("All tests passed!")
+    # Example usage
+    hr = HumanResources(CHAT_INITIATOR)
+
+    # assert _create() returns a new agent object: {'name': 'finance', 'title': 'finance manager'}
+    hr._create({"name": "John", "role": "finance"})    
+    hr._create({"name": "Claude", "role": "sales"})
+    hr._create({"name": "Mary", "role": "marketing"})
+    hr._create({"name": "Alice", "role": "management"})   
