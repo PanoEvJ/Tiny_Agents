@@ -1,33 +1,50 @@
 {
-    "sales": {
-        "name": "sales",
-        "description": "sales agents",
-        "skills": [
-            "sales",
-            "customer service",
-            "communication"
-        ]
-    },
-    "marketing": {
-        "name": "marketing",
-        "description": "marketing agents",
-        "skills": [
-            "marketing",
-            "communication"
-        ]
-    },
-    "engineer": {
-        "name": "engineer",
-        "description": "engineers",
-        "skills": [
-            "python",
-            "linux",
-            "communication"
-        ]
-    },
-    "Analyst": {
-        "name": "Agent Smith",
-        "role": "Analyst",
-        "description": "Data Analysis"
-    }
+    "finance": [
+        {
+            "name": "John",
+            "role": "finance",
+            "agent_type": "userproxy",
+            "description": "finance expert",
+            "human_input_mode": "",
+            "skills": [
+                "finance"
+            ]
+        }
+    ],
+    "sales": [
+        {
+            "name": "Claude",
+            "role": "sales",
+            "agent_type": "assistant",
+            "description": "sales expert",
+            "human_input_mode": "",
+            "skills": [
+                "sales"
+            ]
+        }
+    ],
+    "marketing": [
+        {
+            "name": "Mary",
+            "role": "marketing",
+            "agent_type": "assistant",
+            "description": "marketing expert",
+            "human_input_mode": "",
+            "skills": [
+                "marketing"
+            ]
+        }
+    ],
+    "management": [
+        {
+            "name": "Alice",
+            "role": "management",
+            "agent_type": "assistant",
+            "description": "management expert",
+            "human_input_mode": "",
+            "skills": [
+                "management"
+            ]
+        }
+    ]
 }
