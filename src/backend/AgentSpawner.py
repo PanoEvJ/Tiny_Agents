@@ -79,42 +79,43 @@ def combine_description_and_skills(
     )
 
 
-json_data = {
-    "1": {
-        "name": "sales",
-        "agent_type": "assistant",
-        "description": "sales agents",
-        "skills": ["sales", "customer service", "communication"],
-        "human_input_mode": "TERMINATE",
-    },
-    "2": {
-        "name": "marketing",
-        "agent_type": "assistant",
-        "description": "marketing agents",
-        "skills": ["marketing", "communication"],
-        "human_input_mode": "",
-    },
-    "3": {
-        "name": "engineer",
-        "agent_type": "assistant",
-        "description": "engineers",
-        "skills": ["python", "linux", "communication"],
-        "human_input_mode": "",
-    },
-}
-config_list_gpt4 = [
-    {
-        "model": "gpt-4",
-        "api_key": os.getenv("OPENAI_API_KEY"),
-        # "api_key": str(os.environ["OPENAI_API_KEY"]),
-    },
-    {
-        "model": "gpt-4",
-        "api_key": os.getenv("OPENAI_API_KEY"),
-    },
-]
-llm_config = {"config_list": config_list_gpt4}
-agent_spawner = combine_description_and_skills(json_data, llm_config)
+if __name__ == "__main__":
+    json_data = {
+        "1": {
+            "name": "sales",
+            "agent_type": "assistant",
+            "description": "sales agents",
+            "skills": ["sales", "customer service", "communication"],
+            "human_input_mode": "TERMINATE",
+        },
+        "2": {
+            "name": "marketing",
+            "agent_type": "assistant",
+            "description": "marketing agents",
+            "skills": ["marketing", "communication"],
+            "human_input_mode": "",
+        },
+        "3": {
+            "name": "engineer",
+            "agent_type": "assistant",
+            "description": "engineers",
+            "skills": ["python", "linux", "communication"],
+            "human_input_mode": "",
+        },
+    }
+    config_list_gpt4 = [
+        {
+            "model": "gpt-4",
+            "api_key": os.getenv("OPENAI_API_KEY"),
+            # "api_key": str(os.environ["OPENAI_API_KEY"]),
+        },
+        {
+            "model": "gpt-4",
+            "api_key": os.getenv("OPENAI_API_KEY"),
+        },
+    ]
 
-all_agents = agent_spawner.spawn()
-print(all_agents)
+    llm_config = {"config_list": config_list_gpt4}
+    agent_spawner = combine_description_and_skills(json_data, llm_config)
+    all_agents = agent_spawner.spawn()
+    print(all_agents)
