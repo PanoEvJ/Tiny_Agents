@@ -24,5 +24,10 @@
             "linux",
             "communication"
         ]
+    },
+    "Analyst": {
+        "name": "Agent Smith",
+        "role": "Analyst",
+        "description": "Data Analysis"
     }
 }
