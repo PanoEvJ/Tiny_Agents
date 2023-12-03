@@ -119,33 +119,7 @@ chat_initiator = spawned_agents[0]
 
 import autogen
 
-import chainlit as cl
-
-
-@cl.on_message
-async def main(message):
-    print("Message received!")
-    print(message.content)
-    await cl.Message(content=f"Message received: {message.content}").send()
-
-    chat_initiator = cl.user_session.get("initiator")
-    chat_initiator.message = f"{message}"
-    await cl.Message(
-        content=chat_initiator.initiate_chat(
-            manager,
-            message=f"{message}",
-        )
-    ).send()
-
-
-@cl.on_chat_start
-def on_chat_start():
-    print("Chat started!")
-
-    # chat_initiator = autogen.UserProxyAgent(
-    #     name="Proxy",
-    #     human_input_mode="ALWAYS",
-    #     system_message="You are only initiating the chat. You are not participating in the chat.",
-    #     llm_config=llm_config,
-    # )
-    cl.user_session.set("initiator", spawned_agents[0])
+chat_initiator.initiate_chat(
+    manager,
+    message=f"revenue in the east coast is falling and the competitor is doing great with their product.",
+)
