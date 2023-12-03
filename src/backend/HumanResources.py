@@ -4,7 +4,7 @@ import os
 # load json file from this file's directory
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 FILE_PATH = os.path.join(CURRENT_DIR, 'sample_agent.json')
-    
+
 with open(FILE_PATH) as f:
     sample_agent_json = json.load(f)
 
@@ -13,28 +13,44 @@ class HumanResources():
         self.agent_json = sample_agent_json
 
     def __repr__(self):
-        return f'{self.agents}'
-    
+        return f'{self.agent_json}'
+
     def _create(self, new_agent):
         self.agent_json[new_agent["name"]] = new_agent
+        self._save_to_file()
         return self.agent_json[new_agent["name"]]
-    
+
     def _read(self, agent_name):
         return self.agent_json[agent_name]
-    
+
     def _update(self, agent_name, new_agent):
         self.agent_json[agent_name] = new_agent
+        self._save_to_file()
         return self.agent_json[agent_name]
-    
+
     def _delete(self, agent_name):
         del self.agent_json[agent_name]
+        self._save_to_file()
         return self.agent_json
-    
+
     def agent_object(self, agent_name):
         return self.agent_json[agent_name]
-    
+
     def select_agents(self):
         return list(self.agent_json.keys())
+
+    def _save_to_file(self):
+        with open(FILE_PATH, 'w') as f:
+            json.dump(self.agent_json, f, indent=4)
+
+# Example usage
+hr = HumanResources()
+new_agent = {"name": "Agent Smith", "role": "Analyst", "description": "Data Analysis"}
+hr._create(new_agent)
+
+# Print updated agents
+print(hr.select_agents())
+
     
 
 if __name__ == "__main__":
