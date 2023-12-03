@@ -45,18 +45,49 @@ selected_agents = selector.run_selection()
 print(selected_agents)
 
 # selected_agents = ["sales", "marketing", "engineer"]
+json_data = {
+    "1": {
+        "name": "sales",
+        "agent_type": "assistant",
+        "description": "sales agents",
+        "skills": ["sales", "customer service", "communication"],
+        "human_input_mode": "TERMINATE",
+    },
+    "2": {
+        "name": "marketing",
+        "agent_type": "assistant",
+        "description": "marketing agents",
+        "skills": ["marketing", "communication"],
+        "human_input_mode": "",
+    },
+    "3": {
+        "name": "engineer",
+        "agent_type": "assistant",
+        "description": "engineers",
+        "skills": ["python", "linux", "communication"],
+        "human_input_mode": "",
+    },
+}
 agent_spawner = combine_description_and_skills(json_data, llm_config)
-agent_spawner = AgentSpawner(selected_agents, CHAT_INITIATOR)
-agents = agent_spawner.spawn()
-print(agents)
+spawned_agents = agent_spawner.spawn()
+print(spawned_agents)
 
-# messages = []
-# llm_config = {"config_list": [{"model": "gpt-4"}], "seed": 42, "request_timeout": 600}
-# groupchat = GroupChatSpawner(
-#     agents=agents, llm_config=llm_config, messages=messages, max_round=10
-# )
+messages = []
+groupchat = GroupChatSpawner(
+    agents=spawned_agents, llm_config=llm_config, messages=messages, max_round=10
+)
+manager = groupchat.spawn()
 
-# chat_initiator.initiate_chat(
-#     manager,
-#     message="I want to design an app to make me one million dollars in one month. Yes, your heard that right.",
-# )
+import autogen
+
+chat_initiator = autogen.UserProxyAgent(
+    name="Proxy",
+    human_input_mode="TERMINATE",
+    system_message="You are only initiating the chat. You are not participating in the chat.",
+    llm_config=llm_config,
+)
+
+chat_initiator.initiate_chat(
+    manager,
+    message="I want to design an app to make me one million dollars in one month. Yes, your heard that right.",
+)
