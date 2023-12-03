@@ -4,6 +4,23 @@ load_dotenv()
 
 import openai
 from typing import List
+from pydantic import BaseModel
+
+# # write an openai function that takes ensures response is a list
+# class Response(BaseModel):
+#     response: List[str]
+
+# tools = [
+#   {
+#     "type": "function",
+#     "function": {
+#       "name": "list_agents",
+#       "description": "ensure response is a list",
+#       "parameters": Response.model_json_schema(),
+#     }
+#   }
+# ]
+
 
 class AgentSelector:
     def __init__(
@@ -33,7 +50,7 @@ class AgentSelector:
         # Use OpenAI GPT-4 API to select agents
         openai.api_key = self.api_key
         client = openai.OpenAI()
-        system_prompt=f"You are an Agent Selector. Select {self.n_agents} agents from the available list of agents to best solve the task based on their descriptions."
+        system_prompt=f"You are an Agent Selector. Select {self.n_agents} agents from the available list of agents to best solve the task based on their descriptions. ONLY RESPOND WITH A PYTHON LIST OF AGENTS."
         # print(self.available_agents)
         user_prompt=f"""
                     Task: {self.task}\n
@@ -68,8 +85,7 @@ class AgentSelector:
 
     def run_selection(self):
         selected_agents = self.select_agents()
-        if not isinstance(selected_agents, list):
-            selected_agents = [selected_agents]
+        selected_agents = selected_agents.replace("[", "").replace("]", "").replace("'", "").replace(" ", "").split(",")
         print(f"Agents Selected: {selected_agents}")
         print(f"return type: {type(selected_agents)}")
         return selected_agents
