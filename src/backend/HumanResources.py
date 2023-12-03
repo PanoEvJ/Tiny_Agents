@@ -3,7 +3,7 @@ import os
 
 # load json file from this file's directory
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-FILE_PATH = os.path.join(CURRENT_DIR, 'sample_agent.json')
+FILE_PATH = os.path.join(CURRENT_DIR, 'agents.json')
 
 with open(FILE_PATH) as f:
     sample_agent_json = json.load(f)
@@ -16,9 +16,9 @@ class HumanResources():
         return f'{self.agent_json}'
 
     def _create(self, new_agent):
-        self.agent_json[new_agent["name"]] = new_agent
+        self.agent_json[new_agent["role"]] = new_agent
         self._save_to_file()
-        return self.agent_json[new_agent["name"]]
+        return self.agent_json[new_agent["role"]]
 
     def _read(self, agent_name):
         return self.agent_json[agent_name]
