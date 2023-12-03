@@ -76,7 +76,7 @@ print(spawned_agents)
 
 messages = []
 groupchat = GroupChatSpawner(
-    agents=spawned_agents, llm_config=llm_config, messages=messages, max_round=3
+    agents=spawned_agents, llm_config=llm_config, messages=messages, max_round=10
 )
 manager = groupchat.spawn()
 
