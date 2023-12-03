@@ -9,11 +9,13 @@ import openai
 from typing import Dict, List, Optional, Union
 import os
 from dotenv import load_dotenv
-from HumanResources import HumanResources
+
+# from HumanResources import HumanResources
 from AgentSelector import AgentSelector
 from AgentSpawner import AgentSpawner
 from GroupChatSpawner import GroupChatSpawner
-from AgentSpawner import AgentSpawner
+from AgentSpawner import AgentSpawner, combine_description_and_skills
+import HumanResources
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -33,20 +35,20 @@ config_list_gpt4 = [
 llm_config = {"config_list": config_list_gpt4}
 
 
-hr = HumanResources()
+hr = HumanResources.HumanResources(chat_initiator="CHAT_INITIATOR")
 all_available_agents = hr.select_agents()
 print(all_available_agents)
 
 task = "revenue in the east coast is falling and the competitor is doing great with their product."
 selector = AgentSelector(task=task, available_agents=all_available_agents, n_agents=3)
 selected_agents = selector.run_selection()
-print("*" * 10, selected_agents)
+print(selected_agents)
 
 # selected_agents = ["sales", "marketing", "engineer"]
-# agent_spawner = combine_description_and_skills(json_data, llm_config)
-# agent_spawner = AgentSpawner(selected_agents, CHAT_INITIATOR)
-# agents = agent_spawner.spawn()
-# print(agents)
+agent_spawner = combine_description_and_skills(json_data, llm_config)
+agent_spawner = AgentSpawner(selected_agents, CHAT_INITIATOR)
+agents = agent_spawner.spawn()
+print(agents)
 
 # messages = []
 # llm_config = {"config_list": [{"model": "gpt-4"}], "seed": 42, "request_timeout": 600}
