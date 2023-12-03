@@ -1,47 +1,77 @@
 import json
 import os
 
-# load json file from this file's directory
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+# Get the current working directory
+CURRENT_DIR = os.getcwd()
+
+# Assuming your 'agents.json' file is in the same directory as the notebook
 FILE_PATH = os.path.join(CURRENT_DIR, 'agents.json')
 
-with open(FILE_PATH) as f:
-    sample_agent_json = json.load(f)
+# Check if the file exists and read it, otherwise create an empty dictionary
+if os.path.exists(FILE_PATH):
+    with open(FILE_PATH) as f:
+        sample_agent_json = json.load(f)
+else:
+    sample_agent_json = {}
 
 class HumanResources():
-    def __init__(self):
+    def __init__(self, chat_initiator):
         self.agent_json = sample_agent_json
+        self.chat_initiator = chat_initiator 
 
     def __repr__(self):
         return f'{self.agent_json}'
 
     def _create(self, new_agent):
+        if new_agent["role"] in self.agent_json:
+            raise ValueError(f"Agent with role '{new_agent['role']}' already exists.")
+
+        new_agent['agent_type'] = 'userproxy' if new_agent['role'] == self.chat_initiator else 'assistant'
         self.agent_json[new_agent["role"]] = new_agent
         self._save_to_file()
+
         return self.agent_json[new_agent["role"]]
 
-    def _read(self, agent_name):
-        return self.agent_json[agent_name]
+    def _read(self, agent_role):
+        return self.agent_json.get(agent_role, "Agent role not found")
 
-    def _update(self, agent_name, new_agent):
-        self.agent_json[agent_name] = new_agent
+    def _update(self, agent_role, new_agent):
+        if agent_role not in self.agent_json:
+            raise ValueError(f"Agent with role '{agent_role}' does not exist.")
+
+        new_agent['agent_type'] = 'userproxy' if new_agent['role'] == self.chat_initiator else 'assistant'
+        self.agent_json[agent_role] = new_agent
         self._save_to_file()
-        return self.agent_json[agent_name]
+        return self.agent_json[agent_role]
 
-    def _delete(self, agent_name):
-        del self.agent_json[agent_name]
+    def _delete(self, agent_role):
+        if agent_role not in self.agent_json:
+            raise ValueError(f"Agent with role '{agent_role}' does not exist.")
+        del self.agent_json[agent_role]
         self._save_to_file()
-        return self.agent_json
+        return "Agent deleted successfully"
 
-    def agent_object(self, agent_name):
-        return self.agent_json[agent_name]
+    def agent_object(self, agent_role):
+        return self.agent_json.get(agent_role, "Agent role not found")
+
 
     def select_agents(self):
         return list(self.agent_json.keys())
+    
+    def get_complete(self, roles_list):
+        result = []
+        for role in roles_list:
+            for agent_name, agent_details in self.agent_json.items():
+                if agent_details['role'] == role:
+                    result.append(agent_details)
+        return result
 
     def _save_to_file(self):
         with open(FILE_PATH, 'w') as f:
             json.dump(self.agent_json, f, indent=4)
+
+
+
 
 # Example usage
 hr = HumanResources()
