@@ -1,0 +1,28 @@
+{
+    "sales": {
+        "name": "sales",
+        "description": "sales agents",
+        "skills": [
+            "sales",
+            "customer service",
+            "communication"
+        ]
+    },
+    "marketing": {
+        "name": "marketing",
+        "description": "marketing agents",
+        "skills": [
+            "marketing",
+            "communication"
+        ]
+    },
+    "engineer": {
+        "name": "engineer",
+        "description": "engineers",
+        "skills": [
+            "python",
+            "linux",
+            "communication"
+        ]
+    }
+}
