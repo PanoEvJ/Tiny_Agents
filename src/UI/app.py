@@ -99,7 +99,6 @@ class ChainlitUserProxyAgent(UserProxyAgent):
             silent=silent,
         )
 
-
 @cl.on_chat_start
 async def on_chat_start():
     config_list = config_list_from_json(env_or_file="OAI_CONFIG_LIST")

@@ -34,17 +34,6 @@ config_list_gpt4 = [
 ]
 llm_config = {"config_list": config_list_gpt4}
 
-
-hr = HumanResources.HumanResources(chat_initiator="CHAT_INITIATOR")
-all_available_agents = hr.select_agents()
-print(all_available_agents)
-
-task = "revenue in the east coast is falling and the competitor is doing great with their product."
-selector = AgentSelector(task=task, available_agents=all_available_agents, n_agents=3)
-selected_agents = selector.run_selection()
-print(selected_agents)
-
-# selected_agents = ["sales", "marketing", "engineer"]
 json_data = {
     "1": {
         "name": "sales",
@@ -68,26 +57,59 @@ json_data = {
         "human_input_mode": "",
     },
 }
+
+
+hr = HumanResources.HumanResources(chat_initiator="CHAT_INITIATOR")
+all_available_agents = hr.select_agents()
+print(all_available_agents)
+
+task = "revenue in the east coast is falling and the competitor is doing great with their product."
+selector = AgentSelector(task=task, available_agents=all_available_agents, n_agents=3)
+selected_agents = selector.run_selection()
+print(selected_agents)
+
+# selected_agents = ["sales", "marketing", "engineer"]
+
 agent_spawner = combine_description_and_skills(json_data, llm_config)
 spawned_agents = agent_spawner.spawn()
 print(spawned_agents)
 
 messages = []
 groupchat = GroupChatSpawner(
-    agents=spawned_agents, llm_config=llm_config, messages=messages, max_round=10
+    agents=spawned_agents, llm_config=llm_config, messages=messages, max_round=3
 )
 manager = groupchat.spawn()
 
 import autogen
 
-chat_initiator = autogen.UserProxyAgent(
-    name="Proxy",
-    human_input_mode="TERMINATE",
-    system_message="You are only initiating the chat. You are not participating in the chat.",
-    llm_config=llm_config,
-)
 
-chat_initiator.initiate_chat(
-    manager,
-    message="I want to design an app to make me one million dollars in one month. Yes, your heard that right.",
-)
+import chainlit as cl
+
+
+@cl.on_message
+async def main(message):
+    print("Message received!")
+    print(message.content)
+    await cl.Message(content=f"Message received: {message.content}").send()
+
+    chat_initiator = cl.user_session.get("initiator")
+    chat_initiator.message = f"{message}"
+    await cl.Message(
+        content=chat_initiator.initiate_chat(
+            manager,
+            message=f"{message}",
+        )
+    ).send()
+
+
+@cl.on_chat_start
+def on_chat_start():
+    print("Chat started!")
+
+    # chat_initiator = autogen.UserProxyAgent(
+    #     name="Proxy",
+    #     human_input_mode="ALWAYS",
+    #     system_message="You are only initiating the chat. You are not participating in the chat.",
+    #     llm_config=llm_config,
+    # )
+    cl.user_session.set("initiator", spawned_agents[0])
