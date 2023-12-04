@@ -6,6 +6,8 @@
 
 [MemGPT - Github repo](https://github.com/cpacker/MemGPT)
 
+[Autogen Blog](https://microsoft.github.io/autogen/blog/2023/11/20/AgentEval/)
+
 ## May be useful
 
 [AutoGen + MemGPT](https://github.com/PromptEngineer48/MemGPT-AutoGEN-LLM/)
